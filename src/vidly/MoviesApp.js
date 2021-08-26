@@ -7,14 +7,14 @@ import Rentals from "./components/Rentals";
 import NotFound from "../routingApp/NotFound";
 import NavBar from "./components/NavBar";
 import MovieForm from "./components/MovieForm";
-import LoginForm from "./components/LoginForm";
+import LoginFormWithJoi from "./components/LoginFormWithJoi";
 
 const MoviesApp = () => {
   return (
     <>
       <NavBar />
       <Switch>
-        <Route path="/login" component={LoginForm} />
+        <Route path="/login" component={LoginFormWithJoi} />
         <Route path="/movies/:id" component={MovieForm} />
         <Route path="/customers" component={Customers}></Route>
         <Route path="/rentals" component={Rentals}></Route>
