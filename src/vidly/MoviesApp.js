@@ -8,14 +8,14 @@ import NotFound from "../routingApp/NotFound";
 import NavBar from "./components/NavBar";
 import MovieForm from "./components/MovieForm";
 import LoginFormWithJoi from "./components/LoginFormWithJoi";
-import Register from "./components/Register";
+import RegisterForm from "./components/RegisterForm";
 
 const MoviesApp = () => {
   return (
     <>
       <NavBar />
       <Switch>
-        <Route path="/register" component={Register} />
+        <Route path="/register" component={RegisterForm} />
         <Route path="/login" component={LoginFormWithJoi} />
         <Route path="/movies/:id" component={MovieForm} />
         <Route path="/customers" component={Customers}></Route>
