@@ -1,7 +1,8 @@
 import React, { Component } from "react";
+import Joi from "joi-browser";
 import Input from "./common/Input";
 
-class LoginForm extends Component {
+class LoginFormWithJoi extends Component {
   state = {
     account: { username: "", password: "" },
     errors: {},
@@ -11,13 +12,18 @@ class LoginForm extends Component {
   // componentDidMount() {
   //   this.username.current.focus();
   // }
-  validatePorperty = (input) => {
-    if (input.name == "username") {
-      if (input.value.trim() === "") return "Username is required";
-    }
-    if (input.name == "password") {
-      if (input.value.trim() == "") return "Password is required";
-    }
+
+  schema = {
+    username: Joi.string().required().label("Username"),
+    password: Joi.string().required().label("Password"),
+  };
+
+  validatePorperty = ({ name, value }) => {
+    const obj = { [name]: value };
+    const schemaForObj = { [name]: this.schema[name] }; //new schema
+    const { error } = Joi.validate(obj, schemaForObj);
+    if (!error) return null;
+    return error.details[0].message;
   };
 
   handleChange = ({ currentTarget: input }) => {
@@ -32,18 +38,22 @@ class LoginForm extends Component {
   };
 
   validate = () => {
-    const errors = {};
-    const { account } = this.state;
-    if (account.username.trim() === "")
-      errors.username = "Username is required";
-    if (account.password.trim() === "")
-      errors.password = "Password is required";
+    const options = { abortEarly: false };
+    // const result = Joi.validate(this.state.account, this.schema, options);
+    const result = Joi.validate(this.state.account, this.schema, options);
 
-    return Object.keys(errors).length === 0 ? null : errors;
+    if (!result.error) return null;
+
+    const errors = {};
+    for (let item of result.error.details) {
+      errors[item.path[0]] = item.message;
+    }
+    return errors;
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
+    console.log("hello");
 
     const errors = this.validate();
     this.setState({ errors: errors || {} });
@@ -73,11 +83,13 @@ class LoginForm extends Component {
             onChange={this.handleChange}
             error={errors.password}
           />
-          <button className="btn btn-primary">Login</button>
+          <button disabled={this.validate()} className="btn btn-primary">
+            Login
+          </button>
         </form>
       </div>
     );
   }
 }
 
-export default LoginForm;
+export default LoginFormWithJoi;
