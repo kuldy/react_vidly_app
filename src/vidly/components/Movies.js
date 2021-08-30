@@ -8,6 +8,7 @@ import Pagination from "./common/Pagination";
 import ListGroup from "./common/ListGroup";
 import MoviesTable from "./MoviesTable";
 import { Link, NavLink } from "react-router-dom";
+import SearchBox from "./common/SearchBox";
 
 class Movies extends Component {
   state = {
@@ -17,6 +18,7 @@ class Movies extends Component {
     sortColumn: { path: "title", order: "asc" },
     pageSize: 10,
     currentPage: 1,
+    searchText: "",
   };
 
   componentDidMount() {
@@ -31,7 +33,7 @@ class Movies extends Component {
   };
 
   handleGenreSelect = (genre) => {
-    this.setState({ selectedItem: genre, currentPage: 1 });
+    this.setState({ selectedItem: genre, currentPage: 1, searchText: "" });
   };
 
   handleLike = (movie) => {
@@ -59,6 +61,14 @@ class Movies extends Component {
     this.setState({ sortColumn });
   };
 
+  applySearch = (query, movies) => {
+    return query
+      ? movies.filter((m) =>
+          m.title.toLowerCase().includes(query.toLowerCase())
+        )
+      : movies;
+  };
+
   getPagedData = () => {
     const {
       pageSize,
@@ -66,12 +76,13 @@ class Movies extends Component {
       movies: allMovies,
       selectedItem,
       sortColumn,
+      searchText,
     } = this.state;
 
     const filteredMovies =
       selectedItem && selectedItem._id
         ? allMovies.filter((m) => m.genre._id == selectedItem._id)
-        : allMovies;
+        : this.applySearch(searchText, allMovies);
 
     const sortedMovies = _.orderBy(
       filteredMovies,
@@ -84,9 +95,14 @@ class Movies extends Component {
     return { totalCount: filteredMovies.length, data: movies };
   };
 
+  handleSearch = (query) => {
+    const searchText = query;
+    this.setState({ searchText, selectedItem: null, currentPage: 1 });
+  };
+
   render() {
     const { length: count } = this.state.movies;
-    const { pageSize, currentPage, sortColumn } = this.state;
+    const { pageSize, currentPage, sortColumn, searchText } = this.state;
 
     const { totalCount, data: movies } = this.getPagedData();
 
@@ -107,6 +123,7 @@ class Movies extends Component {
           </Link>
 
           <p>There are total {totalCount} movies in the database</p>
+          <SearchBox text={searchText} onChange={this.handleSearch} />
           <MoviesTable
             movies={movies}
             sortColumn={sortColumn}
