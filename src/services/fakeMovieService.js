@@ -1,3 +1,4 @@
+import { getGenre } from "./fakeGenreService";
 const movies = [
   {
     _id: "1",
@@ -87,4 +88,58 @@ export function getMovies() {
 }
 export function getMovie(id) {
   return movies.find((movie) => movie._id === id);
+}
+
+export function addMovie(film) {
+  let id = 0;
+  movies.forEach((m) => {
+    if (parseInt(m._id) > id) {
+      id = parseInt(m._id);
+    }
+  });
+  const _id = (id + 1).toString();
+
+  const movie = { _id, ...film };
+  movie.genre = getGenre(parseInt(movie.genre));
+  movie.isLiked = false;
+  movie.publishDate = "2018-09-03T19:04:28:809Z";
+  movies.push(movie);
+  console.log("movies list", getMovies());
+}
+export function editMovie(film, id) {
+  const _id = id.toString();
+  const movieObj = { _id, ...film };
+  movieObj.genre = getGenre(film.genre);
+  movieObj.isLiked = false;
+  movieObj.publishDate = "2018-09-03T19:04:28:809Z";
+
+  const index = movies.indexOf(getMovie(_id));
+  movies[index] = movieObj;
+  console.log(movies);
+}
+
+export function saveMovie(film) {
+  const movie = movies.find((m) => m._id === film._id) || {};
+  movie.title = film.title;
+  movie.genre = getGenre(film.genreId);
+  movie.numberInStock = film.numberInStock;
+  movie.dailyRentalRate = film.dailyRentalRate;
+
+  if (!movie._id) {
+    movie._id = Date.now().toString();
+    movie.isLiked = false;
+    movie.publishDate = "2018-09-03T19:04:28:809Z";
+    movies.push(movie);
+  }
+  console.log("saveMovie", movie);
+  return movie;
+}
+
+export function deleteMovie(film) {
+  // const index = movies.indexOf(movie)
+  console.log(film);
+  const index = movies.indexOf(film);
+  movies.splice(index, 1);
+  // movies = movies.filter((m) => m._id !== film._id); const error
+  return movies;
 }

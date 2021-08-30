@@ -6,3 +6,9 @@ export const genres = [
 export const getGenres = () => {
   return genres.filter((g) => g);
 };
+
+export const getGenre = (id) => {
+  if (typeof id === "string") id = parseInt(id);
+  const genreArr = genres.filter((g) => g._id === id);
+  return genreArr[0];
+};
