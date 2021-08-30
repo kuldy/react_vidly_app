@@ -123,7 +123,7 @@ class Movies extends Component {
           </Link>
 
           <p>There are total {totalCount} movies in the database</p>
-          <SearchBox text={searchText} onChange={this.handleSearch} />
+          <SearchBox value={searchText} onChange={this.handleSearch} />
           <MoviesTable
             movies={movies}
             sortColumn={sortColumn}
