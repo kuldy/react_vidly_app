@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Input from "./Input";
+import SelectInput from "./SelectInput";
 
 class Form extends Component {
   state = {
@@ -37,13 +38,17 @@ class Form extends Component {
     else delete errors[input.name];
 
     const data = { ...this.state.data };
+    if (input.type === "checkbox") {
+      data[input.name] = input.checked;
+      this.setState({ data, errors });
+      return;
+    }
     data[input.name] = input.value;
     this.setState({ data, errors });
   };
 
   handleSubmit = (e) => {
     e.preventDefault();
-    console.log("hello");
 
     const errors = this.validate();
     this.setState({ errors: errors || {} });
@@ -59,6 +64,20 @@ class Form extends Component {
         type={type}
         name={name}
         label={label}
+        value={data[name]}
+        onChange={this.handleChange}
+        error={errors[name]}
+      />
+    );
+  };
+
+  renderSelect = (name, label, options) => {
+    const { data, errors } = this.state;
+    return (
+      <SelectInput
+        name={name}
+        label={label}
+        options={options}
         value={data[name]}
         onChange={this.handleChange}
         error={errors[name]}
