@@ -1,6 +1,7 @@
 import React from "react";
 
-import CounterApp from "./counterApp.js/CounterApp";
+import CounterApp from "./counterApp/CounterApp";
+import HttpApp from "./httpApp/HttpApp";
 import RoutingApp from "./routingApp/RoutingApp";
 import MoviesApp from "./vidly/MoviesApp";
 
@@ -9,8 +10,9 @@ function App() {
     <>
       <main className="container">
         {/* <CounterApp /> */}
-        <MoviesApp />
+        {/* <MoviesApp /> */}
         {/* <RoutingApp /> */}
+        <HttpApp />
       </main>
     </>
   );
