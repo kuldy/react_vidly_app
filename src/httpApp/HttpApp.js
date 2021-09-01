@@ -1,4 +1,8 @@
 import React, { Component } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+// import 'react-toastify/dist/ReactToastify.css';
+
 import http from "../services/httpService";
 import config from "../config.json";
 
@@ -38,7 +42,7 @@ class HttpApp extends Component {
       await http.delete(`${config.apiEndpoint}/${post.id}`);
     } catch (ex) {
       if (ex.response && ex.response.status === 404) {
-        alert("Post has already been deleted");
+        toast.error("Post has already been deleted");
       }
       this.setState({ posts: originalPosts });
     }
@@ -47,6 +51,7 @@ class HttpApp extends Component {
   render() {
     return (
       <div className="my-2">
+        <ToastContainer />
         <button onClick={this.handleAdd} className="btn btn-primary">
           Add
         </button>
