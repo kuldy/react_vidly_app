@@ -1,5 +1,6 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
 import Movies from "./components/Movies";
 import Customers from "./components/Customers";
@@ -13,6 +14,7 @@ import RegisterForm from "./components/RegisterForm";
 const MoviesApp = () => {
   return (
     <>
+      <ToastContainer />
       <NavBar />
       <Switch>
         <Route path="/register" component={RegisterForm} />
