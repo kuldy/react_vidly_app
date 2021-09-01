@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import _ from "lodash";
+import { toast } from "react-toastify";
 
 import { paginate } from "../../utils/paginate";
 import { deleteMovie, getMovies } from "../../services/fakeMovieService";
@@ -100,6 +101,10 @@ class Movies extends Component {
     this.setState({ searchText, selectedItem: null, currentPage: 1 });
   };
 
+  handleAlert = () => {
+    toast.error("Created toastify error");
+  };
+
   render() {
     const { length: count } = this.state.movies;
     const { pageSize, currentPage, sortColumn, searchText } = this.state;
@@ -117,10 +122,18 @@ class Movies extends Component {
             onItemSelect={this.handleGenreSelect}
           />
         </div>
+
         <div className="col-md">
           <Link className="btn btn-primary mb-3" to="/movies/new">
             New Movie
           </Link>
+
+          <button
+            onClick={this.handleAlert}
+            className="btn btn-danger mx-3 mb-3"
+          >
+            Start Alert
+          </button>
 
           <p>There are total {totalCount} movies in the database</p>
           <SearchBox value={searchText} onChange={this.handleSearch} />
