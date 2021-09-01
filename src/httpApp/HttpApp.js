@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import 'react-toastify/dist/ReactToastify.css';
 
 import http from "../services/httpService";
 import config from "../config.json";
@@ -39,7 +38,7 @@ class HttpApp extends Component {
     this.setState({ posts });
 
     try {
-      await http.delete(`${config.apiEndpoint}/${post.id}`);
+      await http.delete(`s${config.apiEndpoint}/${post.id}`);
     } catch (ex) {
       if (ex.response && ex.response.status === 404) {
         toast.error("Post has already been deleted");
