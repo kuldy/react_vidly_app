@@ -22,6 +22,19 @@ class Movies extends Component {
     searchText: "",
   };
 
+  async componentDidMount() {
+    const { data } = await getGenres();
+    const modeledGenres = this.modelGenres(data);
+    // console.log("after model genres is:", modeledGenres);
+    const genres = [{ _id: "", name: "All Genres" }, ...modeledGenres];
+
+    const films = await getMovies();
+    const movies = this.modelMoviesView(films);
+    // console.log("movies are", movies);
+
+    this.setState({ movies, genres });
+  }
+
   modelGenres = (data) => {
     const genres = data.map((g) => {
       return { _id: g.id, name: g.name };
@@ -46,32 +59,16 @@ class Movies extends Component {
     return modeledMovies;
   };
 
-  async componentDidMount() {
-    const { data } = await getGenres();
-    const modeledGenres = this.modelGenres(data);
-    // console.log("after model genres is:", modeledGenres);
-    const genres = [{ _id: "", name: "All Genres" }, ...modeledGenres];
-
-    const films = await getMovies();
-    const movies = this.modelMoviesView(films);
-    console.log("movies are", movies);
-
-    this.setState({ movies, genres });
-  }
-
   handleDelete = async (movie) => {
-    console.log("movie is:", movie);
     const originalMovies = this.state.movies;
     const movies = this.state.movies.filter((m) => m._id !== movie._id);
     this.setState({ movies });
-
     try {
       await deleteMovie(movie._id);
     } catch (error) {
       // console.log("error is:", error.response);
       if (error.response.status == 404) {
         const message = error.response.data.messages.error;
-        // console.log("message is: ", message);
         toast.error(message);
       }
       this.setState({ movies: originalMovies });

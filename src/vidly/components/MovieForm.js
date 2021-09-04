@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 
 import Form from "./common/Form";
-import { getGenres } from "../../services/fakeGenreService";
-import { getMovie, saveMovie } from "../../services/fakeMovieService";
+import { getGenres } from "../../services/genreService";
+import { getMovie, saveMovie } from "../../services/movieService";
+import { toast } from "react-toastify";
 
 class MovieForm extends Form {
   state = {
@@ -23,32 +24,63 @@ class MovieForm extends Form {
     numberInStock: Joi.number().required().min(0).max(100).label("Stock"),
     dailyRentalRate: Joi.number().required().min(0).max(10).label("Rate"),
   };
-  componentDidMount() {
+
+  modelGenres = (data) => {
+    const genres = data.map((g) => {
+      return { _id: g.id, name: g.name };
+    });
+    return genres;
+  };
+
+  async componentDidMount() {
     const { match, history } = this.props;
-    const genres = getGenres();
+
+    const { data } = await getGenres();
+    const genres = this.modelGenres(data);
     this.setState({ genres });
 
     if (match.params.id === "new") return;
 
-    const movie = getMovie(match.params.id);
-    if (!movie) return history.replace("/not-found");
-
-    this.setState({ data: this.mapToViewModel(movie) });
+    try {
+      const movie = await getMovie(match.params.id);
+      console.log("single movie is:", movie);
+      if (!movie) return history.replace("/not-found");
+      this.setState({ data: this.mapToViewModel(movie) });
+    } catch (error) {
+      console.log("response is:", error.response);
+      if (error.response.status == 404) {
+        toast.error(error.response.data.messages.error);
+        return history.replace("/not-found");
+      }
+    }
   }
+
   mapToViewModel(movie) {
     return {
-      _id: movie._id,
+      _id: movie.id,
       title: movie.title,
-      genreId: movie.genre._id.toString(),
-      numberInStock: movie.numberInStock,
-      dailyRentalRate: movie.dailyRentalRate,
+      genreId: movie.genre_id.toString(),
+      numberInStock: movie.number_in_stock,
+      dailyRentalRate: movie.daily_rental_rate,
     };
   }
   doSubmit() {
     console.log("form submitted final data is:", this.state.data);
-    saveMovie(this.state.data);
+    const movie = this.mapToMovieModel(this.state.data);
+    saveMovie(movie);
     this.props.history.push("/movies");
   }
+
+  mapToMovieModel = (data) => {
+    return {
+      id: data._id,
+      title: data.title,
+      genre_id: data.genreId,
+      number_in_stock: data.numberInStock,
+      daily_rental_rate: data.dailyRentalRate,
+    };
+  };
+
   render() {
     const { genres } = this.state;
     return (
