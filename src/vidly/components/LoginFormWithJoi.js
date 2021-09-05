@@ -21,8 +21,22 @@ class LoginFormWithJoi extends Form {
 
   doSubmit = async () => {
     console.log("submitted");
-    const { data } = this.state;
-    await login(data.username, data.password);
+    try {
+      const { data } = this.state;
+      await login(data.username, data.password);
+    } catch (ex) {
+      console.log("response is:", ex.response);
+      if (ex.response && ex.response.status === 401) {
+        const errors = { ...this.state.errors };
+
+        if (ex.response.data.messages.error.includes("email"))
+          errors.username = ex.response.data.messages.error;
+        if (ex.response.data.messages.error.includes("password"))
+          errors.password = ex.response.data.messages.error;
+
+        this.setState({ errors });
+      }
+    }
   };
   render() {
     return (
