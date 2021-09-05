@@ -23,7 +23,10 @@ class LoginFormWithJoi extends Form {
     console.log("submitted");
     try {
       const { data } = this.state;
-      await login(data.username, data.password);
+      const { data: jwt } = await login(data.username, data.password);
+      // console.log(jwt);
+      localStorage.setItem("token", jwt.token);
+      this.props.history.push("/");
     } catch (ex) {
       console.log("response is:", ex.response);
       if (ex.response && ex.response.status === 401) {
