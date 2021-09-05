@@ -22,6 +22,8 @@ class RegisterForm extends Form {
     try {
       const { data } = await userService.register(this.state.data);
       console.log("registered user is:", data);
+      localStorage.setItem("token", data.token);
+      this.props.history.push("/");
     } catch (error) {
       console.log("error is:", error.response);
       const { data, status } = error.response;
