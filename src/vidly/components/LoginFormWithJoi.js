@@ -26,7 +26,8 @@ class LoginFormWithJoi extends Form {
       const { data: jwt } = await login(data.username, data.password);
       // console.log(jwt);
       localStorage.setItem("token", jwt.token);
-      this.props.history.push("/");
+      // this.props.history.push("/"); // cmdd of MoviesApp not runs
+      window.location = "/"; // this makes full reload so cmdd of MoviesApp runs, so it finda the token and extracts user from it
     } catch (ex) {
       console.log("response is:", ex.response);
       if (ex.response && ex.response.status === 401) {

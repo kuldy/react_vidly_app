@@ -23,7 +23,8 @@ class RegisterForm extends Form {
       const { data } = await userService.register(this.state.data);
       console.log("registered user is:", data);
       localStorage.setItem("token", data.token);
-      this.props.history.push("/");
+      // this.props.history.push("/");
+      window.location = "/"; // this makes full reload so cmdd of MoviesApp runs, so it finda the token and extracts user from it
     } catch (error) {
       console.log("error is:", error.response);
       const { data, status } = error.response;
