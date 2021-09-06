@@ -29,7 +29,7 @@ class MoviesApp extends Component {
     return (
       <>
         <ToastContainer />
-        <NavBar />
+        <NavBar user={this.state.user} />
         <Switch>
           <Route path="/register" component={RegisterForm} />
           <Route path="/login" component={LoginFormWithJoi} />
