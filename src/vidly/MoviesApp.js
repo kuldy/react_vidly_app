@@ -11,6 +11,7 @@ import NavBar from "./components/NavBar";
 import MovieForm from "./components/MovieForm";
 import LoginFormWithJoi from "./components/LoginFormWithJoi";
 import RegisterForm from "./components/RegisterForm";
+import Logout from "./components/Logout";
 
 class MoviesApp extends Component {
   state = {};
@@ -33,6 +34,7 @@ class MoviesApp extends Component {
         <Switch>
           <Route path="/register" component={RegisterForm} />
           <Route path="/login" component={LoginFormWithJoi} />
+          <Route path="/logout" component={Logout} />
           <Route path="/movies/:id" component={MovieForm} />
           <Route path="/customers" component={Customers}></Route>
           <Route path="/rentals" component={Rentals}></Route>
