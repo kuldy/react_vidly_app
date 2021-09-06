@@ -12,19 +12,14 @@ import MovieForm from "./components/MovieForm";
 import LoginFormWithJoi from "./components/LoginFormWithJoi";
 import RegisterForm from "./components/RegisterForm";
 import Logout from "./components/Logout";
+import auth from "../services/authService";
 
 class MoviesApp extends Component {
   state = {};
 
   componentDidMount() {
-    try {
-      const jwt = localStorage.getItem("token");
-      const { data } = jwtDecode(jwt);
-      this.setState({ user: data });
-    } catch (error) {
-      {
-      }
-    }
+    const user = auth.getCurrentUser();
+    this.setState({ user });
   }
   render() {
     return (

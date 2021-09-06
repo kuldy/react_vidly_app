@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/Form";
-import { login } from "../../services/authService";
+import auth from "../../services/authService";
 
 class LoginFormWithJoi extends Form {
   state = {
@@ -23,11 +23,10 @@ class LoginFormWithJoi extends Form {
     console.log("submitted");
     try {
       const { data } = this.state;
-      const { data: jwt } = await login(data.username, data.password);
-      // console.log(jwt);
-      localStorage.setItem("token", jwt.token);
+      await auth.login(data.username, data.password);
       // this.props.history.push("/"); // cmdd of MoviesApp not runs
-      window.location = "/"; // this makes full reload so cmdd of MoviesApp runs, so it finda the token and extracts user from it
+      window.location = "/";
+      // this makes full reload so cmdd of MoviesApp runs, so it finda the token and extracts user from it
     } catch (ex) {
       console.log("response is:", ex.response);
       if (ex.response && ex.response.status === 401) {

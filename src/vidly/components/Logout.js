@@ -1,3 +1,16 @@
+import React, { useEffect } from "react";
+import auth from "../../services/authService";
+
+const Logout = () => {
+  useEffect(() => {
+    auth.logout();
+    window.location = "/";
+  }, []);
+  return null;
+};
+
+export default Logout;
+
 // import React, { Component } from "react";
 // class Logout extends React.Component {
 //   componentDidMount() {
@@ -9,15 +22,3 @@
 //   }
 // }
 // export default Logout;
-
-import React, { useEffect } from "react";
-
-const Logout = () => {
-  useEffect(() => {
-    localStorage.removeItem("token");
-    window.location = "/";
-  }, []);
-  return null;
-};
-
-export default Logout;

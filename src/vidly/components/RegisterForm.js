@@ -3,6 +3,7 @@ import Joi from "joi-browser";
 import Form from "./common/Form";
 
 import * as userService from "../../services/userService";
+import auth from "../../services/authService";
 
 class RegisterForm extends Form {
   state = {
@@ -21,8 +22,8 @@ class RegisterForm extends Form {
     // console.log("final data is: ", this.state.data);
     try {
       const { data } = await userService.register(this.state.data);
-      console.log("registered user is:", data);
-      localStorage.setItem("token", data.token);
+      auth.loginWithJwt(data);
+
       // this.props.history.push("/");
       window.location = "/"; // this makes full reload so cmdd of MoviesApp runs, so it finda the token and extracts user from it
     } catch (error) {
