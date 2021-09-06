@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import jwtDecode from "jwt-decode";
@@ -47,3 +47,37 @@ class MoviesApp extends Component {
 }
 
 export default MoviesApp;
+
+// implementing componentDidMount With use effect hook
+// const MoviesApp = () => {
+//   const [user, setUser] = useState();
+//   useEffect(() => {
+//     try {
+//       const jwt = localStorage.getItem("token");
+//       const { data } = jwtDecode(jwt);
+//       setUser(data);
+//     } catch (error) {
+//       {
+//       }
+//     }
+//   }, []);
+
+//   return (
+//     <>
+//       <ToastContainer />
+//       <NavBar user={user} />
+//       <Switch>
+//         <Route path="/register" component={RegisterForm} />
+//         <Route path="/login" component={LoginFormWithJoi} />
+//         <Route path="/logout" component={Logout} />
+//         <Route path="/movies/:id" component={MovieForm} />
+//         <Route path="/customers" component={Customers}></Route>
+//         <Route path="/rentals" component={Rentals}></Route>
+//         <Route path="/movies" component={Movies}></Route>
+//         <Route path="/not-found" component={NotFound}></Route>
+//         <Redirect from="/" exact to="/movies" />
+//         <Redirect to="/not-found" />
+//       </Switch>
+//     </>
+//   );
+// };
