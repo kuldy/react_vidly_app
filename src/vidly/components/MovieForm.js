@@ -64,11 +64,20 @@ class MovieForm extends Form {
       dailyRentalRate: movie.daily_rental_rate,
     };
   }
-  doSubmit() {
+  async doSubmit() {
     console.log("form submitted final data is:", this.state.data);
     const movie = this.mapToMovieModel(this.state.data);
-    saveMovie(movie);
-    this.props.history.push("/movies");
+    try {
+      console.log("saving movie");
+      await saveMovie(movie);
+      this.props.history.push("/movies");
+    } catch (error) {
+      console.log("on save errors are", error.response);
+      if (error.response && error.response.status == 401) {
+        const msg = error.response.data.messages.error;
+        toast.error(msg);
+      }
+    }
   }
 
   mapToMovieModel = (data) => {
@@ -97,7 +106,7 @@ class MovieForm extends Form {
           {this.renderSelect("genreId", "Genre", genres)}
           {this.renderInput("numberInStock", "Number in Stock")}
           {this.renderInput("dailyRentalRate", "Rate")}
-          {console.log("validation errors:", this.validate())}
+          {/* {console.log("validation errors:", this.validate())} */}
           {this.renderButton("Save")}
         </form>
       </div>
