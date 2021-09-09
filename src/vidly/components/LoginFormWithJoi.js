@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 import Form from "./common/Form";
 import auth from "../../services/authService";
+import { Redirect } from "react-router";
 
 class LoginFormWithJoi extends Form {
   state = {
@@ -24,9 +25,9 @@ class LoginFormWithJoi extends Form {
     try {
       const { data } = this.state;
       await auth.login(data.username, data.password);
-      // this.props.history.push("/"); // cmdd of MoviesApp not runs
-      window.location = "/";
-      // this makes full reload so cmdd of MoviesApp runs, so it finda the token and extracts user from it
+      const { state } = this.props.location; //redirect to diffrent locaation than "/", where user previously wanted to go.
+      window.location = state ? state.from.pathname : "/";
+      // "/" this makes full reload so cmdd of MoviesApp runs, so it finds the token and extracts user from it
     } catch (ex) {
       console.log("response is:", ex.response);
       if (ex.response && ex.response.status === 401) {
@@ -42,6 +43,7 @@ class LoginFormWithJoi extends Form {
     }
   };
   render() {
+    if (auth.getCurrentUser()) return <Redirect to="/" />;
     return (
       <div>
         <form className="col-md-6 offset-md-3" onSubmit={this.handleSubmit}>
