@@ -4,6 +4,7 @@ import Form from "./common/Form";
 
 import * as userService from "../../services/userService";
 import auth from "../../services/authService";
+import { Redirect } from "react-router";
 
 class RegisterForm extends Form {
   state = {
@@ -39,6 +40,7 @@ class RegisterForm extends Form {
     }
   };
   render() {
+    if (auth.getCurrentUser()) return <Redirect to="/" />;
     return (
       <div>
         <form className="col-md-6 offset-md-3" onSubmit={this.handleSubmit}>
