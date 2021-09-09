@@ -13,6 +13,7 @@ import LoginFormWithJoi from "./components/LoginFormWithJoi";
 import RegisterForm from "./components/RegisterForm";
 import Logout from "./components/Logout";
 import auth from "../services/authService";
+import ProtectedRoutes from "./components/common/ProtectedRoutes";
 
 class MoviesApp extends Component {
   state = {};
@@ -22,6 +23,7 @@ class MoviesApp extends Component {
     this.setState({ user });
   }
   render() {
+    const { user } = this.state;
     return (
       <>
         <ToastContainer />
@@ -30,10 +32,9 @@ class MoviesApp extends Component {
           <Route path="/register" component={RegisterForm} />
           <Route path="/login" component={LoginFormWithJoi} />
           <Route path="/logout" component={Logout} />
-          <Route path="/movies/:id" component={MovieForm} />
+          <ProtectedRoutes path={"/movies/:id"} component={MovieForm} />
           <Route path="/customers" component={Customers}></Route>
           <Route path="/rentals" component={Rentals}></Route>
-          {/* <Route path="/movies" component={Movies}></Route> */}
           <Route
             path="/movies"
             render={(props) => <Movies {...props} user={this.state.user} />}
