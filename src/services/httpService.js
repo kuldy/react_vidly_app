@@ -1,9 +1,7 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 import logger from "./logService";
-import auth from "./authService";
 
-axios.defaults.headers.common["Authorization"] = auth.getJwt();
 axios.defaults.headers.common["Accept"] = "application/json";
 axios.defaults.headers.common["Content-Type"] = "application/json";
 
@@ -20,10 +18,15 @@ axios.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
+function setJwt(jwt) {
+  axios.defaults.headers.common["Authorization"] = jwt;
+}
+
 export default {
   get: axios.get,
   post: axios.post,
   put: axios.put,
   patch: axios.patch,
   delete: axios.delete,
+  setJwt,
 };
