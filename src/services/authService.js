@@ -25,7 +25,11 @@ function getCurrentUser() {
   try {
     const jwt = localStorage.getItem(tokenKey);
     const { data } = jwtDecode(jwt);
-    return data;
+    let user = data;
+    user.isAdmin = user.is_admin === "0" ? false : true;
+    delete user.is_admin;
+
+    return user;
   } catch (error) {
     {
       return null;
