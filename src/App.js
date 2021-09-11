@@ -1,4 +1,6 @@
 import React from "react";
+import AdvancedReact from "./advancedReactApp/AdvancedReact";
+import ReactAdvanced from "./advancedReactApp/AdvancedReact";
 
 import CounterApp from "./counterApp/CounterApp";
 import HttpApp from "./httpApp/HttpApp";
@@ -10,9 +12,10 @@ function App() {
     <>
       <main className="container">
         {/* <CounterApp /> */}
-        <MoviesApp />
+        {/* <MoviesApp /> */}
         {/* <RoutingApp /> */}
         {/* <HttpApp /> */}
+        <AdvancedReact />
       </main>
     </>
   );
