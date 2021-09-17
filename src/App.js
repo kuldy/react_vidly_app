@@ -12,10 +12,10 @@ function App() {
     <>
       <main className="container">
         {/* <CounterApp /> */}
-        {/* <MoviesApp /> */}
+        <MoviesApp />
         {/* <RoutingApp /> */}
         {/* <HttpApp /> */}
-        <AdvancedReact />
+        {/* <AdvancedReact /> */}
       </main>
     </>
   );
