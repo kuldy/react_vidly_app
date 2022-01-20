@@ -1,3 +1,9 @@
+### To run the app 
+### first download it.
+### then run npm install
+### then run npm start
+### it will run the app on http://localhost:3000
+now we need to setup the backend of our app.
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
